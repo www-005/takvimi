@@ -58,7 +58,9 @@ function updateDate() {
   const hijriDay = 16;
 
   document.getElementById('date-info').textContent = 
-    `Data: ${gregorian} | Hijr: ${hijriDay} ${hijriMonth} ${hijriYear} | ${dayName}`;
+    `Data: ${gregorian} 
+    | Hijr: ${hijriDay} ${hijriMonth} ${hijriYear}
+    | ${dayName}`;
 }
 
 updateDate();
