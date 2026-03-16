@@ -3,17 +3,17 @@ const prayerData = {
   "sabahu": "05:10",
   "dreka": "12:20",
   "ikindia": "15:45",
-  "ashami": "18:10",
+  "akshami": "18:10",
   "jacia": "19:30"
 };
 
-const prayerOrder = ["imsaku", "sabahu", "dreka", "ikindia", "ashami", "jacia"];
+const prayerOrder = ["imsaku", "sabahu", "dreka", "ikindia", "akshami", "jacia"];
 const prayerNames = {
   imsaku: "Imsaku",
   sabahu: "Sabahu",
   dreka: "Dreka",
   ikindia: "Ikindia",
-  ashami: "Ashami",
+  ashami: "Akshami",
   jacia: "Jacia"
 };
 
