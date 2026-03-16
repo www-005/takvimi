@@ -57,12 +57,14 @@ function updateDate() {
   const hijriMonth = "Ramazan";
   const hijriDay = 16;
 
-  document.getElementById('date-info').textContent = 
-    `Data: ${gregorian}`;
-  document.getElementById('date-info').textContent = 
-    `Hijr: ${hijriDay} ${hijriMonth} ${hijriYear}`;
-    document.getElementById('date-info').textContent = 
-`${dayName}`;
+  const dateInfo = document.getElementById('date-info');
+
+  // Pastaj i vendosim tri linja të ndara
+  dateInfo.innerHTML = `
+    <div>Data: ${gregorian}</div>
+    <div>Hijr: ${hijriDay} ${hijriMonth} ${hijriYear}</div>
+    <div>Dita: ${dayName}</div>
+  `;
 }
 
 updateDate();
