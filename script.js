@@ -13,7 +13,7 @@ const prayerNames = {
   sabahu: "Sabahu",
   dreka: "Dreka",
   ikindia: "Ikindia",
-  ashami: "Akshami",
+  akshami: "Akshami",
   jacia: "Jacia"
 };
 
