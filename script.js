@@ -35,7 +35,7 @@ closeSidebar.addEventListener('click', () => sidebar.style.left = '-320px');
 // Menu items me imazhe
 document.getElementById('monthly-times').addEventListener('click', () => showImage('images/monthly_prayer.png'));
 document.getElementById('special-days').addEventListener('click', () => showImage('images/special_days.png'));
-document.getElementById('imsakije').addEventListener('click', () => showImage('images/imsakije.png'));
+document.getElementById('imsakije').addEventListener('click', () => showImage('imsaku.png'));
 
 function showImage(src) {
   const display = document.getElementById('display-image');
