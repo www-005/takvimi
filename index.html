@@ -32,17 +32,17 @@ header{
 }
 
 .title h1{
-  font-size:20px; /* RRITUR */
+  font-size:20px;
   font-weight:700;
 }
 
 .title p{
-  font-size:14px; /* RRITUR */
+  font-size:14px;
   color:#64748b;
 }
 
 #hijri{
-  font-size:14px; /* RRITUR */
+  font-size:14px;
   color:#16a34a;
   font-weight:600;
 }
@@ -83,16 +83,11 @@ header{
   background:#f1f5f9;
 }
 
-.sidebar a:hover{
-  background:#e2e8f0;
-}
-
 /* CONTAINER */
 .container{
   padding:15px;
 }
 
-/* NEXT BOX */
 .next-box{
   background:#22c55e;
   border-radius:18px;
@@ -100,18 +95,11 @@ header{
   text-align:center;
   color:white;
   margin-bottom:20px;
-  box-shadow:0 8px 18px rgba(0,0,0,0.1);
-}
-
-.next-box h2{
-  font-size:14px;
 }
 
 .countdown{
   font-size:26px;
   font-weight:bold;
-  letter-spacing:2px;
-  margin-top:8px;
 }
 
 /* LIST */
@@ -124,22 +112,17 @@ header{
 .item{
   display:flex;
   justify-content:space-between;
-  align-items:center;
   padding:14px;
   background:white;
   border-radius:14px;
-  box-shadow:0 3px 8px rgba(0,0,0,0.05);
 }
 
 .item.active{
   background:#16a34a;
   color:white;
-  transform:scale(1.03);
 }
 
-.time{
-  font-weight:bold;
-}
+.time{font-weight:bold;}
 
 </style>
 </head>
@@ -177,6 +160,7 @@ header{
 
 const prayerData = {
   "2026-03-21": {
+    imsak: "05:00",
     fajr: "05:10",
     dhuhr: "12:05",
     asr: "15:30",
@@ -193,32 +177,27 @@ function getToday(){
   return new Date().toISOString().split("T")[0];
 }
 
-/* DITA ME SHKRONJË TË MADHE */
 function capitalize(text){
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-/* DATA NORMALE FIX */
+/* DATE */
 function formatDate(){
   const d = new Date();
-
   let day = d.toLocaleDateString("sq-AL",{weekday:"long"});
   day = capitalize(day);
 
-  let rest = d.toLocaleDateString("sq-AL",{
-    year:"numeric", month:"long", day:"numeric"
-  });
-
+  let rest = d.toLocaleDateString("sq-AL",{year:"numeric",month:"long",day:"numeric"});
   document.getElementById("date").innerText = day + ", " + rest;
 }
 
-/* HIJRI FIX SAKT */
+/* ✔️ FIX HIXHRI (pa October) */
 function formatHijri(){
   const d = new Date();
 
-  const parts = new Intl.DateTimeFormat('en-TN-u-ca-islamic', {
+  const parts = new Intl.DateTimeFormat('en-TN-u-ca-islamic',{
     day:'numeric',
-    month:'long',
+    month:'numeric',
     year:'numeric'
   }).formatToParts(d);
 
@@ -227,18 +206,18 @@ function formatHijri(){
   let year = parts.find(p=>p.type==="year").value;
 
   const months = {
-    Muharram:"Muharrem",
-    Safar:"Safar",
-    "Rabiʻ I":"Rebiul-Evvel",
-    "Rabiʻ II":"Rebiul-Ahir",
-    "Jumada I":"Xhumadel-Ula",
-    "Jumada II":"Xhumadel-Ahire",
-    Rajab:"Rexheb",
-    Shaʻban:"Shaban",
-    Ramadan:"Ramazan",
-    Shawwal:"Sheval",
-    "Dhuʻl-Qiʻdah":"Dhul-Kade",
-    "Dhuʻl-Hijjah":"Dhul-Hixhe"
+    "1":"Muharrem",
+    "2":"Safar",
+    "3":"Rebiul-Evvel",
+    "4":"Rebiul-Ahir",
+    "5":"Xhumadel-Ula",
+    "6":"Xhumadel-Ahire",
+    "7":"Rexheb",
+    "8":"Shaban",
+    "9":"Ramazan",
+    "10":"Sheval",
+    "11":"Dhul-Kade",
+    "12":"Dhul-Hixhe"
   };
 
   let monthSq = months[month] || month;
@@ -247,11 +226,13 @@ function formatHijri(){
     "Hixhri: " + day + " " + monthSq + " " + year;
 }
 
+/* RENDER TIMES (IMSAK PARA SABAHUT) */
 function renderTimes(){
   const data = prayerData[getToday()];
   const container = document.getElementById("times");
 
   const names = {
+    imsak:"Imsaku",
     fajr:"Sabahu",
     dhuhr:"Dreka",
     asr:"Ikindia",
@@ -261,21 +242,27 @@ function renderTimes(){
 
   container.innerHTML = "";
 
-  for(let key in data){
-    container.innerHTML += `
-      <div class="item" id="${key}">
-        <span>${names[key]}</span>
-        <span class="time">${data[key]}</span>
-      </div>
-    `;
-  }
+  const order = ["imsak","fajr","dhuhr","asr","maghrib","isha"];
+
+  order.forEach(key=>{
+    if(data[key]){
+      container.innerHTML += `
+        <div class="item" id="${key}">
+          <span>${names[key]}</span>
+          <span class="time">${data[key]}</span>
+        </div>
+      `;
+    }
+  });
 }
 
+/* UPDATE NEXT PRAYER */
 function update(){
   const data = prayerData[getToday()];
   const now = new Date();
 
   const names = {
+    imsak:"Imsaku",
     fajr:"Sabahu",
     dhuhr:"Dreka",
     asr:"Ikindia",
@@ -283,11 +270,16 @@ function update(){
     isha:"Jacia"
   };
 
+  let order = ["imsak","fajr","dhuhr","asr","maghrib","isha"];
+
   let nextKey = null;
   let nextTime = null;
 
-  for(let key in data){
-    let [h,m] = data[key].split(":");
+  for(let key of order){
+    let tData = data[key];
+    if(!tData) continue;
+
+    let [h,m] = tData.split(":");
     let t = new Date();
     t.setHours(h,m,0);
 
@@ -299,7 +291,7 @@ function update(){
   }
 
   if(!nextKey){
-    nextKey = "fajr";
+    nextKey = "imsak";
     nextTime = new Date();
     nextTime.setHours(23,59,59);
   }
@@ -311,14 +303,14 @@ function update(){
   let s = Math.floor(diff/1000)%60;
 
   document.getElementById("countdown").innerText =
-    String(h).padStart(2,'0') + ":" +
-    String(m).padStart(2,'0') + ":" +
+    String(h).padStart(2,'0')+":"+
+    String(m).padStart(2,'0')+":"+
     String(s).padStart(2,'0');
 
   document.getElementById("nextPrayer").innerText =
     "Koha e radhës: " + names[nextKey];
 
-  document.querySelectorAll(".item").forEach(c=>c.classList.remove("active"));
+  document.querySelectorAll(".item").forEach(e=>e.classList.remove("active"));
 
   if(nextKey){
     document.getElementById(nextKey).classList.add("active");
