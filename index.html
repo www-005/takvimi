@@ -18,33 +18,39 @@ header{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:12px 15px;
+  padding:14px 16px;
 }
 
 .burger{
-  font-size:24px;
+  font-size:26px;
   cursor:pointer;
 }
 
+/* 🔥 TITULLI MË I MADH */
 .title{
   text-align:center;
   flex:1;
 }
 
 .title h1{
-  font-size:20px;
-  font-weight:700;
+  font-size:30px;   /* MË I MADH */
+  font-weight:800;
+  color:#0f172a;
 }
 
+/* 📅 DATA MË E MADHE */
 .title p{
-  font-size:14px;
+  font-size:18px;   /* MË E MADHE */
   color:#64748b;
+  margin-top:2px;
 }
 
+/* 🟢 HIXHRI MË I THEKSUAR */
 #hijri{
-  font-size:14px;
+  font-size:18px;
   color:#16a34a;
-  font-weight:600;
+  font-weight:700;
+  margin-top:2px;
 }
 
 /* SIDEBAR */
@@ -61,9 +67,7 @@ header{
   z-index:999;
 }
 
-.sidebar.active{
-  left:0;
-}
+.sidebar.active{ left:0; }
 
 .close-btn{
   font-size:22px;
@@ -84,9 +88,7 @@ header{
 }
 
 /* CONTAINER */
-.container{
-  padding:15px;
-}
+.container{ padding:15px; }
 
 .next-box{
   background:#22c55e;
@@ -131,6 +133,7 @@ header{
 
 <header>
   <div class="burger" onclick="toggleMenu()">☰</div>
+
   <div class="title">
     <h1>Xhamia e fshatit Merovë</h1>
     <p id="date"></p>
@@ -188,10 +191,11 @@ function formatDate(){
   day = capitalize(day);
 
   let rest = d.toLocaleDateString("sq-AL",{year:"numeric",month:"long",day:"numeric"});
+
   document.getElementById("date").innerText = day + ", " + rest;
 }
 
-/* ✔️ FIX HIXHRI (pa October) */
+/* HIXHRI */
 function formatHijri(){
   const d = new Date();
 
@@ -226,7 +230,7 @@ function formatHijri(){
     "Hixhri: " + day + " " + monthSq + " " + year;
 }
 
-/* RENDER TIMES (IMSAK PARA SABAHUT) */
+/* REST OF CODE (pa ndryshim) */
 function renderTimes(){
   const data = prayerData[getToday()];
   const container = document.getElementById("times");
@@ -256,7 +260,6 @@ function renderTimes(){
   });
 }
 
-/* UPDATE NEXT PRAYER */
 function update(){
   const data = prayerData[getToday()];
   const now = new Date();
