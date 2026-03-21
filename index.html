@@ -12,48 +12,49 @@ body{
   background:#f8fafc;
   color:#0f172a;
 }
-
-/* HEADER */
+body::before{
+  content:"";
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:350px;
+  height:350px;
+  background:url("logo.png") no-repeat center;
+  background-size:contain;
+  opacity:0.12;
+  z-index:-1;
+}
 header{
   display:flex;
   align-items:center;
   justify-content:space-between;
   padding:14px 16px;
 }
-
 .burger{
   font-size:26px;
   cursor:pointer;
 }
-
-/* 🔥 TITULLI MË I MADH */
 .title{
   text-align:center;
   flex:1;
 }
-
 .title h1{
-  font-size:30px;   /* MË I MADH */
+  font-size:30px;
   font-weight:800;
   color:#0f172a;
 }
-
-/* 📅 DATA MË E MADHE */
 .title p{
-  font-size:18px;   /* MË E MADHE */
+  font-size:18px;
   color:#64748b;
   margin-top:2px;
 }
-
-/* 🟢 HIXHRI MË I THEKSUAR */
 #hijri{
   font-size:18px;
   color:#16a34a;
   font-weight:700;
   margin-top:2px;
 }
-
-/* SIDEBAR */
 .sidebar{
   position:fixed;
   left:-260px;
@@ -66,9 +67,7 @@ header{
   box-shadow:5px 0 25px rgba(0,0,0,0.1);
   z-index:999;
 }
-
 .sidebar.active{ left:0; }
-
 .close-btn{
   font-size:22px;
   cursor:pointer;
@@ -76,7 +75,6 @@ header{
   text-align:right;
   margin-bottom:15px;
 }
-
 .sidebar a{
   display:block;
   margin:10px 0;
@@ -86,10 +84,7 @@ header{
   color:#0f172a;
   background:#f1f5f9;
 }
-
-/* CONTAINER */
 .container{ padding:15px; }
-
 .next-box{
   background:#22c55e;
   border-radius:18px;
@@ -98,19 +93,15 @@ header{
   color:white;
   margin-bottom:20px;
 }
-
 .countdown{
   font-size:26px;
   font-weight:bold;
 }
-
-/* LIST */
 .list{
   display:flex;
   flex-direction:column;
   gap:10px;
 }
-
 .item{
   display:flex;
   justify-content:space-between;
@@ -118,14 +109,11 @@ header{
   background:white;
   border-radius:14px;
 }
-
 .item.active{
   background:#16a34a;
   color:white;
 }
-
 .time{font-weight:bold;}
-
 </style>
 </head>
 
@@ -143,8 +131,8 @@ header{
 
 <div class="sidebar" id="sidebar">
   <span class="close-btn" onclick="toggleMenu()">✖</span>
-  <a href="#">Ditët dhe netët e dalluara</a>
-  <a href="#">Imsakije</a>
+  <a href="ditet.html">Ditët dhe netët e dalluara</a>
+  <a href="imsakije.html">Imsakije</a>
   <a href="#">Kohet mujore të namazit</a>
 </div>
 
@@ -161,17 +149,29 @@ header{
 
 <script>
 
-const prayerData = {
-  "2026-03-21": {
-    imsak: "05:00",
-    fajr: "05:10",
-    dhuhr: "12:05",
-    asr: "15:30",
-    maghrib: "18:10",
-    isha: "19:30"
-  }
-};
+let prayerData = {};
 
+/* 🔥 LOAD JSON */
+async function loadJSON(){
+  const res = await fetch("data.json");
+  const json = await res.json();
+
+  json.forEach(d => {
+    prayerData[d.Data] = {
+      imsak: d.Imsak,
+      fajr: d.Sabahu,
+      dhuhr: d.Dreka,
+      asr: d.Ikindija || d.Ikindia,
+      maghrib: d.Akshami,
+      isha: d.Jacia
+    };
+  });
+
+  renderTimes();
+  setInterval(update,1000);
+}
+
+/* MENU */
 function toggleMenu(){
   document.getElementById("sidebar").classList.toggle("active");
 }
@@ -191,7 +191,6 @@ function formatDate(){
   day = capitalize(day);
 
   let rest = d.toLocaleDateString("sq-AL",{year:"numeric",month:"long",day:"numeric"});
-
   document.getElementById("date").innerText = day + ", " + rest;
 }
 
@@ -210,29 +209,20 @@ function formatHijri(){
   let year = parts.find(p=>p.type==="year").value;
 
   const months = {
-    "1":"Muharrem",
-    "2":"Safar",
-    "3":"Rebiul-Evvel",
-    "4":"Rebiul-Ahir",
-    "5":"Xhumadel-Ula",
-    "6":"Xhumadel-Ahire",
-    "7":"Rexheb",
-    "8":"Shaban",
-    "9":"Ramazan",
-    "10":"Sheval",
-    "11":"Dhul-Kade",
-    "12":"Dhul-Hixhe"
+    "1":"Muharrem","2":"Safar","3":"Rebiul-Evvel","4":"Rebiul-Ahir",
+    "5":"Xhumadel-Ula","6":"Xhumadel-Ahire","7":"Rexheb","8":"Shaban",
+    "9":"Ramazan","10":"Sheval","11":"Dhul-Kade","12":"Dhul-Hixhe"
   };
 
-  let monthSq = months[month] || month;
-
   document.getElementById("hijri").innerText =
-    "Hixhri: " + day + " " + monthSq + " " + year;
+    "Hixhri: " + day + " " + (months[month] || month) + " " + year;
 }
 
-/* REST OF CODE (pa ndryshim) */
+/* RENDER */
 function renderTimes(){
   const data = prayerData[getToday()];
+  if(!data) return;
+
   const container = document.getElementById("times");
 
   const names = {
@@ -246,9 +236,7 @@ function renderTimes(){
 
   container.innerHTML = "";
 
-  const order = ["imsak","fajr","dhuhr","asr","maghrib","isha"];
-
-  order.forEach(key=>{
+  ["imsak","fajr","dhuhr","asr","maghrib","isha"].forEach(key=>{
     if(data[key]){
       container.innerHTML += `
         <div class="item" id="${key}">
@@ -260,8 +248,11 @@ function renderTimes(){
   });
 }
 
+/* UPDATE */
 function update(){
   const data = prayerData[getToday()];
+  if(!data) return;
+
   const now = new Date();
 
   const names = {
@@ -273,37 +264,30 @@ function update(){
     isha:"Jacia"
   };
 
-  let order = ["imsak","fajr","dhuhr","asr","maghrib","isha"];
+  let nextKey=null,nextTime=null;
 
-  let nextKey = null;
-  let nextTime = null;
-
-  for(let key of order){
+  for(let key of ["imsak","fajr","dhuhr","asr","maghrib","isha"]){
     let tData = data[key];
     if(!tData) continue;
 
-    let [h,m] = tData.split(":");
-    let t = new Date();
+    let [h,m]=tData.split(":");
+    let t=new Date();
     t.setHours(h,m,0);
 
-    if(t > now){
-      nextKey = key;
-      nextTime = t;
-      break;
-    }
+    if(t>now){ nextKey=key; nextTime=t; break; }
   }
 
   if(!nextKey){
-    nextKey = "imsak";
-    nextTime = new Date();
+    nextKey="imsak";
+    nextTime=new Date();
     nextTime.setHours(23,59,59);
   }
 
-  let diff = nextTime - now;
+  let diff=nextTime-now;
 
-  let h = Math.floor(diff/1000/60/60);
-  let m = Math.floor(diff/1000/60)%60;
-  let s = Math.floor(diff/1000)%60;
+  let h=Math.floor(diff/1000/60/60);
+  let m=Math.floor(diff/1000/60)%60;
+  let s=Math.floor(diff/1000)%60;
 
   document.getElementById("countdown").innerText =
     String(h).padStart(2,'0')+":"+
@@ -311,7 +295,7 @@ function update(){
     String(s).padStart(2,'0');
 
   document.getElementById("nextPrayer").innerText =
-    "Koha e radhës: " + names[nextKey];
+    "Koha e radhës: "+names[nextKey];
 
   document.querySelectorAll(".item").forEach(e=>e.classList.remove("active"));
 
@@ -320,10 +304,10 @@ function update(){
   }
 }
 
+/* INIT */
 formatDate();
 formatHijri();
-renderTimes();
-setInterval(update,1000);
+loadJSON();
 
 </script>
 
