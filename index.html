@@ -3,40 +3,334 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Xhamia e fshatit Merovë - Takvim</title>
-<link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<title>Takvim - Xhamia Merovë</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+
+body{
+  background:#f8fafc;
+  color:#0f172a;
+}
+
+/* HEADER */
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 15px;
+}
+
+.burger{
+  font-size:24px;
+  cursor:pointer;
+}
+
+.title{
+  text-align:center;
+  flex:1;
+}
+
+.title h1{
+  font-size:20px; /* RRITUR */
+  font-weight:700;
+}
+
+.title p{
+  font-size:14px; /* RRITUR */
+  color:#64748b;
+}
+
+#hijri{
+  font-size:14px; /* RRITUR */
+  color:#16a34a;
+  font-weight:600;
+}
+
+/* SIDEBAR */
+.sidebar{
+  position:fixed;
+  left:-260px;
+  top:0;
+  width:260px;
+  height:100%;
+  background:#ffffff;
+  padding:20px;
+  transition:0.3s;
+  box-shadow:5px 0 25px rgba(0,0,0,0.1);
+  z-index:999;
+}
+
+.sidebar.active{
+  left:0;
+}
+
+.close-btn{
+  font-size:22px;
+  cursor:pointer;
+  display:block;
+  text-align:right;
+  margin-bottom:15px;
+}
+
+.sidebar a{
+  display:block;
+  margin:10px 0;
+  padding:12px;
+  border-radius:12px;
+  text-decoration:none;
+  color:#0f172a;
+  background:#f1f5f9;
+}
+
+.sidebar a:hover{
+  background:#e2e8f0;
+}
+
+/* CONTAINER */
+.container{
+  padding:15px;
+}
+
+/* NEXT BOX */
+.next-box{
+  background:#22c55e;
+  border-radius:18px;
+  padding:20px;
+  text-align:center;
+  color:white;
+  margin-bottom:20px;
+  box-shadow:0 8px 18px rgba(0,0,0,0.1);
+}
+
+.next-box h2{
+  font-size:14px;
+}
+
+.countdown{
+  font-size:26px;
+  font-weight:bold;
+  letter-spacing:2px;
+  margin-top:8px;
+}
+
+/* LIST */
+.list{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px;
+  background:white;
+  border-radius:14px;
+  box-shadow:0 3px 8px rgba(0,0,0,0.05);
+}
+
+.item.active{
+  background:#16a34a;
+  color:white;
+  transform:scale(1.03);
+}
+
+.time{
+  font-weight:bold;
+}
+
+</style>
 </head>
+
 <body>
 
 <header>
-  <button id="burger">&#9776;</button>
-  <div class="header-text">
+  <div class="burger" onclick="toggleMenu()">☰</div>
+  <div class="title">
     <h1>Xhamia e fshatit Merovë</h1>
-    <h2>Takvimi</h2>
-    <p id="date-info"></p>
+    <p id="date"></p>
+    <p id="hijri"></p>
   </div>
 </header>
 
-<aside id="sidebar">
-  <button id="close-sidebar">✖</button>
-  <h1>Menu</h1>
-  <ul>
-    <li id="monthly-times">📅 Kohet Mujore</li>
-    <li id="special-days">⭐ Ditet dhe Netet e Dallura</li>
-    <li id="imsakije">🕋 Imsakije</li>
-  </ul>
-</aside>
+<div class="sidebar" id="sidebar">
+  <span class="close-btn" onclick="toggleMenu()">✖</span>
+  <a href="#">Ditët dhe netët e dalluara</a>
+  <a href="#">Imsakije</a>
+  <a href="#">Kohet mujore të namazit</a>
+</div>
 
-<main>
-  <div class="prayer-times">
-    <ul id="prayer-list"></ul>
-  </div>
-  <div id="display-image" class="display-image">
-    <img id="menu-image" src="" alt="Imazhi i Menu-s"/>
-  </div>
-</main>
+<div class="container">
 
-<script src="script.js"></script>
+  <div class="next-box">
+    <h2 id="nextPrayer">Koha e radhës</h2>
+    <div class="countdown" id="countdown">00:00:00</div>
+  </div>
+
+  <div class="list" id="times"></div>
+
+</div>
+
+<script>
+
+const prayerData = {
+  "2026-03-21": {
+    fajr: "05:10",
+    dhuhr: "12:05",
+    asr: "15:30",
+    maghrib: "18:10",
+    isha: "19:30"
+  }
+};
+
+function toggleMenu(){
+  document.getElementById("sidebar").classList.toggle("active");
+}
+
+function getToday(){
+  return new Date().toISOString().split("T")[0];
+}
+
+/* DITA ME SHKRONJË TË MADHE */
+function capitalize(text){
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+/* DATA NORMALE FIX */
+function formatDate(){
+  const d = new Date();
+
+  let day = d.toLocaleDateString("sq-AL",{weekday:"long"});
+  day = capitalize(day);
+
+  let rest = d.toLocaleDateString("sq-AL",{
+    year:"numeric", month:"long", day:"numeric"
+  });
+
+  document.getElementById("date").innerText = day + ", " + rest;
+}
+
+/* HIJRI FIX SAKT */
+function formatHijri(){
+  const d = new Date();
+
+  const parts = new Intl.DateTimeFormat('en-TN-u-ca-islamic', {
+    day:'numeric',
+    month:'long',
+    year:'numeric'
+  }).formatToParts(d);
+
+  let day = parts.find(p=>p.type==="day").value;
+  let month = parts.find(p=>p.type==="month").value;
+  let year = parts.find(p=>p.type==="year").value;
+
+  const months = {
+    Muharram:"Muharrem",
+    Safar:"Safar",
+    "Rabiʻ I":"Rebiul-Evvel",
+    "Rabiʻ II":"Rebiul-Ahir",
+    "Jumada I":"Xhumadel-Ula",
+    "Jumada II":"Xhumadel-Ahire",
+    Rajab:"Rexheb",
+    Shaʻban:"Shaban",
+    Ramadan:"Ramazan",
+    Shawwal:"Sheval",
+    "Dhuʻl-Qiʻdah":"Dhul-Kade",
+    "Dhuʻl-Hijjah":"Dhul-Hixhe"
+  };
+
+  let monthSq = months[month] || month;
+
+  document.getElementById("hijri").innerText =
+    "Hixhri: " + day + " " + monthSq + " " + year;
+}
+
+function renderTimes(){
+  const data = prayerData[getToday()];
+  const container = document.getElementById("times");
+
+  const names = {
+    fajr:"Sabahu",
+    dhuhr:"Dreka",
+    asr:"Ikindia",
+    maghrib:"Akshami",
+    isha:"Jacia"
+  };
+
+  container.innerHTML = "";
+
+  for(let key in data){
+    container.innerHTML += `
+      <div class="item" id="${key}">
+        <span>${names[key]}</span>
+        <span class="time">${data[key]}</span>
+      </div>
+    `;
+  }
+}
+
+function update(){
+  const data = prayerData[getToday()];
+  const now = new Date();
+
+  const names = {
+    fajr:"Sabahu",
+    dhuhr:"Dreka",
+    asr:"Ikindia",
+    maghrib:"Akshami",
+    isha:"Jacia"
+  };
+
+  let nextKey = null;
+  let nextTime = null;
+
+  for(let key in data){
+    let [h,m] = data[key].split(":");
+    let t = new Date();
+    t.setHours(h,m,0);
+
+    if(t > now){
+      nextKey = key;
+      nextTime = t;
+      break;
+    }
+  }
+
+  if(!nextKey){
+    nextKey = "fajr";
+    nextTime = new Date();
+    nextTime.setHours(23,59,59);
+  }
+
+  let diff = nextTime - now;
+
+  let h = Math.floor(diff/1000/60/60);
+  let m = Math.floor(diff/1000/60)%60;
+  let s = Math.floor(diff/1000)%60;
+
+  document.getElementById("countdown").innerText =
+    String(h).padStart(2,'0') + ":" +
+    String(m).padStart(2,'0') + ":" +
+    String(s).padStart(2,'0');
+
+  document.getElementById("nextPrayer").innerText =
+    "Koha e radhës: " + names[nextKey];
+
+  document.querySelectorAll(".item").forEach(c=>c.classList.remove("active"));
+
+  if(nextKey){
+    document.getElementById(nextKey).classList.add("active");
+  }
+}
+
+formatDate();
+formatHijri();
+renderTimes();
+setInterval(update,1000);
+
+</script>
+
 </body>
 </html>
