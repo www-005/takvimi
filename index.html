@@ -150,6 +150,7 @@ header{
 <script>
 
 let prayerData = {};
+let currentDay = "";
 
 /* 🔥 LOAD JSON */
 async function loadJSON(){
@@ -161,14 +162,17 @@ async function loadJSON(){
       imsak: d.Imsak,
       fajr: d.Sabahu,
       dhuhr: d.Dreka,
-      asr: d.Ikindija || d.Ikindia,
+      asr: d.Ikindija,
       maghrib: d.Akshami,
       isha: d.Jacia
     };
   });
 
+  currentDay = getToday();
+
   renderTimes();
   setInterval(update,1000);
+  checkDayChange();
 }
 
 /* MENU */
@@ -176,8 +180,15 @@ function toggleMenu(){
   document.getElementById("sidebar").classList.toggle("active");
 }
 
+/* ✅ FIX TIMEZONE */
 function getToday(){
-  return new Date().toISOString().split("T")[0];
+  const now = new Date();
+
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
 }
 
 function capitalize(text){
@@ -229,7 +240,7 @@ function renderTimes(){
     imsak:"Imsaku",
     fajr:"Sabahu",
     dhuhr:"Dreka",
-    asr:"Ikindia",
+    asr:"Ikindija",
     maghrib:"Akshami",
     isha:"Jacia"
   };
@@ -259,7 +270,7 @@ function update(){
     imsak:"Imsaku",
     fajr:"Sabahu",
     dhuhr:"Dreka",
-    asr:"Ikindia",
+    asr:"Ikindija",
     maghrib:"Akshami",
     isha:"Jacia"
   };
@@ -304,10 +315,37 @@ function update(){
   }
 }
 
+/* ✅ CHECK NDRYSHIM DITE */
+function checkDayChange(){
+  setInterval(()=>{
+    const today = getToday();
+
+    if(today !== currentDay){
+      currentDay = today;
+      renderTimes();
+    }
+  },60000); // çdo 1 minutë
+}
+
+/* ✅ REFRESH NË MESNATË */
+function refreshAtMidnight() {
+  const now = new Date();
+  const midnight = new Date();
+
+  midnight.setHours(24,0,0,0);
+
+  const ms = midnight - now;
+
+  setTimeout(() => {
+    location.reload();
+  }, ms);
+}
+
 /* INIT */
 formatDate();
 formatHijri();
 loadJSON();
+refreshAtMidnight();
 
 </script>
 
