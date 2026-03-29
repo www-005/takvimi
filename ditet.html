@@ -1,1 +1,167 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ditët dhe Netët e Mëdha</title>
 
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Segoe UI, sans-serif;
+}
+
+body{
+  background:#f8fafc;
+  color:#0f172a;
+  padding:15px;
+}
+
+/* 🔥 WATERMARK LOGO */
+body::before{
+  content:"";
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:350px;
+  height:350px;
+  background:url("logo.png") no-repeat center;
+  background-size:contain;
+  opacity:0.12;   /* shumë e lehtë */
+  z-index:-1;
+}
+
+/* HEADER */
+header{
+  text-align:center;
+  margin-bottom:15px;
+}
+
+header h1{
+  font-size:22px;
+  font-weight:800;
+  color:#0f172a;
+}
+
+header p{
+  font-size:14px;
+  color:#64748b;
+}
+
+/* LISTA */
+.card{
+  background:white;
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  box-shadow:0 3px 10px rgba(0,0,0,0.05);
+  border-left:5px solid #16a34a;
+}
+
+/* NGJYRË ALTERNATIVE */
+.card:nth-child(even){
+  border-left:5px solid #22c55e;
+}
+
+.name{
+  font-weight:600;
+  font-size:15px;
+}
+
+.date{
+  text-align:right;
+  font-size:13px;
+  color:#334155;
+  font-weight:600;
+}
+
+.day{
+  font-size:12px;
+  color:#64748b;
+  margin-top:2px;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Ditët dhe Netët e Mëdha</h1>
+  <p>1447–1448 Hixhri / 2026</p>
+</header>
+
+<!-- LISTA -->
+<div class="card">
+  <div class="name">Nata e Miraxhit</div>
+  <div class="date">15.01.2026<br><span class="day">e enjte</span></div>
+</div>
+
+<div class="card">
+  <div class="name">Nata e Beratit</div>
+  <div class="date">02.02.2026<br><span class="day">e hënë</span></div>
+</div>
+
+<div class="card">
+  <div class="name">Dita e parë e Ramazanit</div>
+  <div class="date">19.02.2026<br><span class="day">e enjte</span></div>
+</div>
+
+<div class="card">
+  <div class="name">Dita e fitores në Beder</div>
+  <div class="date">07.03.2026<br><span class="day">e shtunë</span></div>
+</div>
+
+<div class="card">
+  <div class="name">Nata e Kadrit</div>
+  <div class="date">16.03.2026<br><span class="day">e hënë</span></div>
+</div>
+
+<div class="card">
+  <div class="name">Nata e Fitër Bajramit</div>
+  <div class="date">19.03.2026<br><span class="day">e enjte</span></div>
+</div>
+
+<div class="card">
+  <div class="name">Dita e Fitër Bajramit</div>
+  <div class="date">20.03.2026<br><span class="day">e premte</span></div>
+</div>
+
+<div class="card">
+  <div class="name">Nata e Kurban Bajramit</div>
+  <div class="date">26.05.2026<br><span class="day">e martë</span></div>
+</div>
+
+<div class="card">
+  <div class="name">Dita e Kurban Bajramit</div>
+  <div class="date">27.05.2026<br><span class="day">e mërkurë</span></div>
+</div>
+
+<div class="card">
+  <div class="name">Viti i Ri - 1448 Hixhri</div>
+  <div class="date">16.06.2026<br><span class="day">e martë</span></div>
+</div>
+
+<div class="card">
+  <div class="name">Dita e Ashurës</div>
+  <div class="date">25.06.2026<br><span class="day">e enjte</span></div>
+</div>
+
+<div class="card">
+  <div class="name">Nata e Mevludit</div>
+  <div class="date">24.08.2026<br><span class="day">e hënë</span></div>
+</div>
+
+<div class="card">
+  <div class="name">Nata e Regaibit</div>
+  <div class="date">10.12.2026<br><span class="day">e enjte</span></div>
+</div>
+
+</body>
+</html>
