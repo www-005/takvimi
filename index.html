@@ -13,8 +13,8 @@ body{
   color:#0f172a;
 }
   .logo{
-  width: 100px;
-  height: 80px;
+  width: 110px;
+  height: 90px;
   vertical-align: middle;
   margin-right:0px;
   background-color: transparent;
@@ -120,6 +120,14 @@ header{
   background:#16a34a;
   color:white;
 }
+
+  .mes {
+  display: flex;           /* aktivizon flexbox */
+  align-items: center;     /* vendos vertikalisht në mes logo dhe teksti */
+  justify-content: center; /* vendos horizontalisht teksti në mes */
+  gap: 10px;               /* hapësirë midis logos dhe tekstit */
+}
+  
 .time{font-weight:bold;}
 </style>
 </head>
@@ -130,7 +138,7 @@ header{
   <div class="burger" onclick="toggleMenu()">☰</div>
 
   <div class="title">
-    <h1> <img src="logo2.png" alt="Logo" class="logo"> Takvimi</h1>
+    <h1 class"mes"> <img src="logo2.png" alt="Logo" class="logo"><span>Takvimi</span></h1>
     <h1>Xhamia e fshatit Merovë</h1>
     <p id="date"></p>
     <p id="hijri"></p>
