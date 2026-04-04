@@ -34,10 +34,9 @@ body::before{
 }
 header{
   display:flex;
-   flex-direction: column;
   align-items:center;
+  justify-content:space-between;
   padding:14px 16px;
-  gap:10px; 
 }
 .burger{
   font-size:26px;
@@ -45,12 +44,8 @@ header{
 }
 }
 .title{
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap:10px;
+  text-align:center;
+  flex:1;
 }
 .title h1{
   font-size:30px;
@@ -137,10 +132,10 @@ header{
   <div class="burger" onclick="toggleMenu()">☰</div>
 
   <div class="title">
-    <img src="logo3.png" alt="Logo" class="logo">
-  <h1>Xhamia e fshatit Merovë</h1>
-  <p id="date"></p>
-  <p id="hijri"></p>
+    <h1 class"mes"> <img src="logo3.png" alt="Logo" class="logo"></h1>
+<h1>Xhamia e fshatit Merovë</h1>
+<p id="date"></p>
+<p id="hijri"></p>
   </div>
 </header>
 
