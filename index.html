@@ -13,11 +13,9 @@ body{
   color:#0f172a;
 }
   .logo{
-  width: 90px;
+ width: 90px;
   height: 70px;
-  vertical-align: middle;
-  margin-right:0px;
-  background-color: transparent;
+  margin-bottom:5px;
 }
 body::before{
   content:"";
@@ -46,11 +44,16 @@ header{
 .title{
   text-align:center;
   flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
 }
 .title h1{
   font-size:30px;
   font-weight:800;
   color:#0f172a;
+   margin-top:8px;
 }
 .title p{
   font-size:18px;
@@ -132,10 +135,10 @@ header{
   <div class="burger" onclick="toggleMenu()">☰</div>
 
   <div class="title">
-    <h1 class"mes"> <img src="logo3.png" alt="Logo" class="logo"></h1>
-<h1>Xhamia e fshatit Merovë</h1>
-<p id="date"></p>
-<p id="hijri"></p>
+     <img src="logo3.png" alt="Logo" class="logo">
+    <h1>Xhamia e fshatit Merovë</h1>
+    <p id="date"></p>
+    <p id="hijri"></p>
   </div>
 </header>
 
