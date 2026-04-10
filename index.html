@@ -37,12 +37,18 @@ body::before{
 header{
   display:flex;
   align-items:center;
-  justify-content:center;
+  justify-content:center; /* 🔥 qendrim ne mes */
   padding:14px 16px;
+}
+
+/* Burger hiqet nga header */
+.burger{
+  display:none;
 }
 
 .title{
   text-align:center;
+  flex:1;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -69,7 +75,6 @@ header{
   margin-top:2px;
 }
 
-/* SIDEBAR */
 .sidebar{
   position:fixed;
   left:-260px;
@@ -102,22 +107,6 @@ header{
   background:#f1f5f9;
 }
 
-/* SETTINGS PANEL */
-.settings{
-  position:fixed;
-  right:-260px;
-  top:0;
-  width:260px;
-  height:100%;
-  background:#ffffff;
-  padding:20px;
-  transition:0.3s;
-  box-shadow:-5px 0 25px rgba(0,0,0,0.1);
-  z-index:999;
-}
-.settings.active{ right:0; }
-
-/* CONTENT */
 .container{ padding:15px; }
 
 .next-box{
@@ -152,10 +141,10 @@ header{
   background:#16a34a;
   color:white;
 }
-
+  
 .time{font-weight:bold;}
 
-/* FOOTER MENU */
+/* ✅ FOOTER */
 .footer{
   position:fixed;
   bottom:0;
@@ -164,12 +153,12 @@ header{
   background:white;
   display:flex;
   justify-content:space-between;
-  padding:12px 25px;
+  padding:14px 25px;
   box-shadow:0 -2px 10px rgba(0,0,0,0.1);
 }
 
 .footer-btn{
-  font-size:24px;
+  font-size:26px;
   cursor:pointer;
 }
 </style>
@@ -186,20 +175,12 @@ header{
   </div>
 </header>
 
-<!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
   <span class="close-btn" onclick="toggleMenu()">✖</span>
   <a href="ditet.html">Ditët dhe netët e dalluara</a>
   <a href="imsakije.html">Imsakije</a>
   <a href="#">Kohet mujore të namazit</a>
   <a href="#">Reth Nesh</a>
-</div>
-
-<!-- SETTINGS -->
-<div class="settings" id="settings">
-  <span class="close-btn" onclick="toggleSettings()">✖</span>
-  <h3>Settings</h3>
-  <p>Këtu mund të shtosh opsione më vonë...</p>
 </div>
 
 <div class="container">
@@ -213,10 +194,10 @@ header{
 
 </div>
 
-<!-- FOOTER -->
+<!-- ✅ FOOTER MENU -->
 <div class="footer">
   <div class="footer-btn" onclick="toggleMenu()">☰</div>
-  <div class="footer-btn" onclick="toggleSettings()">⚙️</div>
+  <div class="footer-btn" onclick="location.href='settings.html'">⚙️</div>
 </div>
 
 <script>
@@ -224,7 +205,7 @@ header{
 let prayerData = {};
 let currentDay = "";
 
-/* LOAD JSON */
+/* 🔥 LOAD JSON */
 async function loadJSON(){
   const res = await fetch("data.json");
   const json = await res.json();
@@ -252,17 +233,14 @@ function toggleMenu(){
   document.getElementById("sidebar").classList.toggle("active");
 }
 
-/* SETTINGS */
-function toggleSettings(){
-  document.getElementById("settings").classList.toggle("active");
-}
-
-/* TIME */
+/* ✅ FIX TIMEZONE */
 function getToday(){
   const now = new Date();
+
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, '0');
   const day = String(now.getDate()).padStart(2, '0');
+
   return `${year}-${month}-${day}`;
 }
 
@@ -363,6 +341,28 @@ function update(){
     if(t>now){ nextKey=key; nextTime=t; break; }
   }
 
+  if(!nextKey){
+  nextKey = "imsak";
+
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+
+  const year = tomorrow.getFullYear();
+  const month = String(tomorrow.getMonth() + 1).padStart(2, '0');
+  const day = String(tomorrow.getDate()).padStart(2, '0');
+
+  const tomorrowKey = `${year}-${month}-${day}`;
+  const nextDayData = prayerData[tomorrowKey];
+
+  if(nextDayData){
+    let [h, m] = nextDayData.imsak.split(":");
+
+    nextTime = new Date();
+    nextTime.setDate(nextTime.getDate() + 1);
+    nextTime.setHours(h, m, 0);
+  }
+}
+
   let diff=nextTime-now;
 
   let h=Math.floor(diff/1000/60/60);
@@ -383,10 +383,37 @@ function update(){
   }
 }
 
+/* ✅ CHECK NDRYSHIM DITE */
+function checkDayChange(){
+  setInterval(()=>{
+    const today = getToday();
+
+    if(today !== currentDay){
+      currentDay = today;
+      renderTimes();
+    }
+  },60000);
+}
+
+/* ✅ REFRESH NË MESNATË */
+function refreshAtMidnight() {
+  const now = new Date();
+  const midnight = new Date();
+
+  midnight.setHours(24,0,0,0);
+
+  const ms = midnight - now;
+
+  setTimeout(() => {
+    location.reload();
+  }, ms);
+}
+
 /* INIT */
 formatDate();
 formatHijri();
 loadJSON();
+refreshAtMidnight();
 
 </script>
 
