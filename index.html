@@ -145,11 +145,10 @@ header{
   left:0;
   width:100%;
   background:#ffffff;
-  padding:12px;
+  padding:12px 20px;
   display:flex;
-  justify-content:flex-start;
+  justify-content:space-between;
   align-items:center;
-  padding-left:20px;
   box-shadow:0 -2px 10px rgba(0,0,0,0.1);
   z-index:1000;
 }
@@ -157,6 +156,11 @@ header{
 /* butoni në footer pak më i madh */
 .footer .burger{
   font-size:28px;
+}
+
+.settings{
+  font-size:26px;
+  cursor:pointer;
 }
   
 </style>
@@ -388,6 +392,10 @@ function checkDayChange(){
   },60000);
 }
 
+  function goSettings(){
+  window.location.href = "settings.html"; // këtu vendos faqen që do hapet
+}
+
 /* ✅ REFRESH NË MESNATË */
 function refreshAtMidnight() {
   const now = new Date();
@@ -412,6 +420,7 @@ refreshAtMidnight();
 
   <footer class="footer">
   <div class="burger" onclick="toggleMenu()">☰</div>
+  <div class="settings" onclick="goSettings()">⚙</div>
 </footer>
 
 </body>
