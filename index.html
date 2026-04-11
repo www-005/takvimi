@@ -37,11 +37,11 @@ body::before{
 header{
   display:flex;
   align-items:center;
-  justify-content:center; /* 🔥 qendrim ne mes */
+  justify-content:space-between;
   padding:14px 16px;
 }
 
-/* Burger hiqet nga header */
+/* 🔴 burger nga header hiqet vetëm vizualisht */
 .burger{
   display:none;
 }
@@ -144,7 +144,7 @@ header{
   
 .time{font-weight:bold;}
 
-/* ✅ FOOTER */
+/* ✅ FOOTER I RI */
 .footer{
   position:fixed;
   bottom:0;
@@ -167,6 +167,8 @@ header{
 <body>
 
 <header>
+  <div class="burger" onclick="toggleMenu()">☰</div>
+
   <div class="title">
     <img src="logo3.png" alt="Logo" class="logo">
     <h1>Xhamia e fshatit Merovë</h1>
@@ -194,7 +196,7 @@ header{
 
 </div>
 
-<!-- ✅ FOOTER MENU -->
+<!-- ✅ FOOTER -->
 <div class="footer">
   <div class="footer-btn" onclick="toggleMenu()">☰</div>
   <div class="footer-btn" onclick="location.href='settings.html'">⚙️</div>
