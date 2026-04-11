@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#f1f5f9;
+  color:#0f172a;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+/* CARD */
+.container{
+  position:relative;
+  text-align:center;
+  background:white;
+  padding:30px;
+  border-radius:18px;
+  box-shadow:0 8px 25px rgba(0,0,0,0.1);
+  width:90%;
+  max-width:420px;
+}
+
+/* X BUTTON */
+.close{
+  position:absolute;
+  top:10px;
+  right:12px;
+  font-size:22px;
+  cursor:pointer;
+  color:#ef4444;
+  font-weight:bold;
+}
+
+.close:hover{
+  color:#dc2626;
+}
+
+/* LOGO */
+.logo{
+  width:80px;
+  margin-bottom:10px;
+}
+
+h2{
+  margin:10px 0 5px;
+  font-size:18px;
+}
+
+p{
+  margin:6px 0;
+  font-size:14px;
+  color:#475569;
+}
+
+/* EMAIL */
+.email{
+  margin-top:10px;
+  color:#16a34a;
+  font-weight:bold;
+}
+
+/* FACEBOOK */
+.facebook{
+  margin-top:15px;
+}
+
+.facebook a{
+  text-decoration:none;
+  color:#1877f2;
+  font-weight:bold;
+  font-size:16px;
+}
+
+/* LOKACION */
+.location{
+  margin-top:15px;
+}
+
+.location a{
+  text-decoration:none;
+  color:#0f172a;
+  font-weight:bold;
+}
+
+/* VERSION */
+.version{
+  margin-top:20px;
+  font-size:12px;
+  color:#94a3b8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- X BUTTON -->
+  <div class="close" onclick="goBack()">✖</div>
+
+  <!-- LOGO -->
+  <img src="logo3.png" class="logo" alt="Logo">
+
+  <!-- TEKSTI -->
+  <h2>COPYRIGHT 2026</h2>
+  <p>XHAMIA E FSHATIT MEROVË</p>
+  <p>Të gjitha të drejtat e rezervuara</p>
+
+  <!-- EMAIL -->
+  <p class="email">📧 xhamiafshmerove@gmail.com</p>
+
+  <!-- FACEBOOK -->
+  <div class="facebook">
+    <a href="https://www.facebook.com/" target="_blank">
+      📘 Na ndiq në Facebook
+    </a>
+  </div>
+
+  <!-- LOKACION -->
+  <div class="location">
+    <a href="https://www.google.com/maps" target="_blank">
+      📍 Lokacioni i Xhamisë
+    </a>
+  </div>
+
+  <!-- VERSION -->
+  <div class="version">
+    Version 1.0
+  </div>
+
+</div>
+
+<script>
+function goBack(){
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
