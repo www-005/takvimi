@@ -87,11 +87,23 @@ header p{
   margin-top:2px;
 }
 
+  .close{
+  position:fixed;
+  top:10px;
+  right:12px;
+  font-size:26px;
+  cursor:pointer;
+  color:#000;
+  font-weight:bold;
+  z-index:1000;
+}
+
 </style>
 </head>
 
 <body>
 
+  <div class="close" onclick="closePage()">✖</div>
 <header>
   <h1>Ditët dhe Netët e Mëdha</h1>
   <p>1447–1448 Hixhri / 2026</p>
@@ -162,6 +174,12 @@ header p{
   <div class="name">Nata e Regaibit</div>
   <div class="date">10.12.2026<br><span class="day">e enjte</span></div>
 </div>
+
+  <script>
+function closePage(){
+  window.location.href = "index.html"; // kthehet në faqen kryesore
+}
+</script>
 
 </body>
 </html>
