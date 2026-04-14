@@ -91,10 +91,23 @@ tr:nth-child(even){
   }
 }
 
+  .close{
+  position:fixed;
+  top:10px;
+  right:12px;
+  font-size:26px;
+  cursor:pointer;
+  color:#000;
+  font-weight:bold;
+  z-index:1000;
+}
+
 </style>
 </head>
 
 <body>
+
+  <div class="close" onclick="closePage()">✖</div>
 
 <div class="header">
   <h1>Imsakije - Ramazan 2026 / 1447H</h1>
@@ -151,5 +164,10 @@ tr:nth-child(even){
 </table>
 </div>
 
+  <script>
+function closePage(){
+  window.location.href = "index.html"; // kthehet në faqen kryesore
+}
+</script>
 </body>
 </html>
