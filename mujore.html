@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kohët Mujore të Namazit</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Segoe UI,sans-serif;}
+
+body{
+  background:#f8fafc;
+  padding:10px;
+  color:#0f172a;
+}
+
+.header{
+  text-align:center;
+  margin-bottom:10px;
+}
+
+.header h1{
+  font-size:18px;
+  font-weight:800;
+}
+
+.header p{
+  font-size:13px;
+  color:#475569;
+  margin-top:4px;
+}
+
+.month{
+  margin-bottom:20px;
+}
+
+.month h2{
+  background:#16a34a;
+  color:white;
+  padding:8px;
+  border-radius:8px 8px 0 0;
+  font-size:14px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:white;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+th{
+  background:#16a34a;
+  color:white;
+  padding:8px;
+  font-size:13px;
+}
+
+td{
+  padding:8px;
+  text-align:center;
+  font-size:13px;
+  border-bottom:1px solid #e2e8f0;
+}
+
+td:first-child{
+  text-align:left;
+  font-weight:600;
+}
+
+tr:nth-child(even){
+  background:#f1f5f9;
+}
+
+.close{
+  position:fixed;
+  top:10px;
+  right:12px;
+  font-size:26px;
+  cursor:pointer;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="close" onclick="closePage()">✖</div>
+
+<div class="header">
+  <h1>Kohët Mujore të Namazit 2026</h1>
+  <p>Xhamia e fshatit Merovë</p>
+</div>
+
+<div id="container"></div>
+
+<script>
+// 👉 JSON DATA (shkurtuar këtu për shembull – ti e ke të plotë)
+const data = [
+  { "Data": "2026-01-01","Sabahu":"06:29","Dreka":"12:00","Ikindija":"14:01","Akshami":"16:21","Jacia":"17:55"},
+  { "Data": "2026-01-02","Sabahu":"06:29","Dreka":"12:00","Ikindija":"14:02","Akshami":"16:22","Jacia":"17:56"},
+  { "Data": "2026-02-01","Sabahu":"06:15","Dreka":"12:00","Ikindija":"14:32","Akshami":"16:56","Jacia":"18:26"},
+  { "Data": "2026-03-01","Sabahu":"05:37","Dreka":"12:00","Ikindija":"14:59","Akshami":"17:32","Jacia":"18:58"},
+  { "Data": "2026-04-01","Sabahu":"05:45","Dreka":"13:00","Ikindija":"16:18","Akshami":"19:07","Jacia":"20:37"},
+  { "Data": "2026-05-01","Sabahu":"04:58","Dreka":"13:00","Ikindija":"16:30","Akshami":"19:40","Jacia":"21:21"}
+];
+
+// 👉 Grupim sipas muajve
+const months = {
+  "01":"Janar",
+  "02":"Shkurt",
+  "03":"Mars",
+  "04":"Prill",
+  "05":"Maj"
+};
+
+let grouped = {};
+
+data.forEach(d=>{
+  let m = d.Data.split("-")[1];
+  if(!grouped[m]) grouped[m]=[];
+  grouped[m].push(d);
+});
+
+const container = document.getElementById("container");
+
+// 👉 Krijo tabelat
+for(let m in months){
+  if(!grouped[m]) continue;
+
+  let html = `
+  <div class="month">
+  <h2>${months[m]}</h2>
+  <table>
+  <tr>
+    <th>Data</th>
+    <th>Sabahu</th>
+    <th>Dreka</th>
+    <th>Ikindia</th>
+    <th>Akshami</th>
+    <th>Jacia</th>
+  </tr>
+  `;
+
+  grouped[m].forEach(d=>{
+    let day = d.Data.split("-")[2];
+    html += `
+    <tr>
+      <td>${day}</td>
+      <td>${d.Sabahu}</td>
+      <td>${d.Dreka}</td>
+      <td>${d.Ikindija}</td>
+      <td>${d.Akshami}</td>
+      <td>${d.Jacia}</td>
+    </tr>
+    `;
+  });
+
+  html += `</table></div>`;
+  container.innerHTML += html;
+}
+
+function closePage(){
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
