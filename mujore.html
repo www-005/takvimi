@@ -14,21 +14,20 @@
 }
 
 body{
-  background:#f8fafc;
-  padding:12px;
+  background:#f3f6fb;
+  padding:10px;
   color:#0f172a;
 }
 
 /* HEADER */
 .header{
   text-align:center;
-  margin-bottom:18px;
+  margin-bottom:10px;
 }
 
 .header h1{
-  font-size:20px;
+  font-size:18px;
   font-weight:800;
-  color:#16a34a;
 }
 
 .header p{
@@ -36,23 +35,22 @@ body{
   color:#64748b;
 }
 
-/* MONTH CARD */
+/* CARD */
 .month{
-  margin-bottom:18px;
   background:white;
-  border-radius:14px;
+  border-radius:10px;
   overflow:hidden;
-  box-shadow:0 8px 20px rgba(0,0,0,0.06);
-  border:1px solid #e2e8f0;
+  margin-bottom:18px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.06);
 }
 
-/* MONTH TITLE (PA ZEZE 😄) */
+/* TITLE */
 .month h2{
-  background:linear-gradient(90deg,#22c55e,#16a34a);
+  background:#16a34a;
   color:white;
-  padding:10px;
-  font-size:15px;
-  letter-spacing:0.5px;
+  padding:8px;
+  font-size:14px;
+  text-align:center;
 }
 
 /* TABLE */
@@ -61,37 +59,44 @@ table{
   border-collapse:collapse;
 }
 
+/* HEADER ROW */
 th{
-  background:#e0f2fe;
-  color:#0f172a;
-  padding:9px;
+  background:#16a34a;
+  color:white;
+  padding:8px;
   font-size:12px;
-  border-bottom:1px solid #bae6fd;
 }
 
+/* CELLS */
 td{
-  padding:8px;
+  padding:7px;
   text-align:center;
   font-size:12px;
-  border-bottom:1px solid #e2e8f0;
+  border-bottom:1px solid #e5e7eb;
 }
 
-/* dita */
+/* FIRST COLUMN (DATA + DITA) */
 td:first-child{
   text-align:left;
-  font-weight:700;
-  color:#16a34a;
+  font-weight:600;
+  padding-left:10px;
 }
 
-/* zebra */
+/* ZEBRA */
 tr:nth-child(even){
-  background:#f9fafb;
+  background:#f8fafc;
 }
 
-/* hover */
-tr:hover{
-  background:#ecfeff;
-  transition:0.2s;
+/* 🔵 FRIDAY HIGHLIGHT (SI FOTO) */
+.friday{
+  background:#14b8a6 !important;
+  color:white;
+  font-weight:600;
+}
+
+/* FRIDAY TEXT FIX */
+.friday td{
+  color:white;
 }
 
 /* CLOSE BUTTON */
@@ -102,10 +107,10 @@ tr:hover{
   font-size:26px;
   cursor:pointer;
   font-weight:bold;
-  color:#16a34a;
+  color:#0f172a;
 }
 
-/* responsive */
+/* MOBILE */
 @media(max-width:600px){
   th,td{
     font-size:10px;
@@ -128,7 +133,7 @@ tr:hover{
 
 <script>
 
-// 👉 Lexon direkt nga data.json
+// 👉 lexon nga data.json
 fetch("data.json")
 .then(res => res.json())
 .then(data => {
@@ -157,6 +162,7 @@ fetch("data.json")
     let html = `
     <div class="month">
       <h2>${months[m]}</h2>
+
       <table>
         <tr>
           <th>Data</th>
@@ -169,10 +175,15 @@ fetch("data.json")
     `;
 
     grouped[m].forEach(d=>{
+
       let day = d.Data.split("-")[2];
 
+      // 👉 e premte (Friday highlight)
+      let dateObj = new Date(d.Data);
+      let isFriday = dateObj.getDay() === 5;
+
       html += `
-        <tr>
+        <tr class="${isFriday ? 'friday' : ''}">
           <td>${day}</td>
           <td>${d.Sabahu}</td>
           <td>${d.Dreka}</td>
