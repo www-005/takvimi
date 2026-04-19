@@ -75,7 +75,7 @@ td{
   border-bottom:1px solid #e5e7eb;
 }
 
-/* FIRST COLUMN (DATA + DITA) */
+/* FIRST COLUMN */
 td:first-child{
   text-align:left;
   font-weight:600;
@@ -87,14 +87,13 @@ tr:nth-child(even){
   background:#f8fafc;
 }
 
-/* 🔵 FRIDAY HIGHLIGHT (SI FOTO) */
+/* FRIDAY */
 .friday{
   background:#0ea5a4 !important;
   color:white;
   font-weight:600;
 }
 
-/* FRIDAY TEXT FIX */
 .friday td{
   color:white;
 }
@@ -133,7 +132,6 @@ tr:nth-child(even){
 
 <script>
 
-// 👉 lexon nga data.json
 fetch("data.json")
 .then(res => res.json())
 .then(data => {
@@ -163,8 +161,12 @@ fetch("data.json")
 
   let container = document.getElementById("container");
 
-  for(let m in months){
-    if(!grouped[m]) continue;
+  // ✅ RENDITJA E SAKTË E MUAJVE
+  Object.keys(months)
+  .sort((a,b)=>a.localeCompare(b))
+  .forEach(m => {
+
+    if(!grouped[m]) return;
 
     let html = `
     <div class="month">
@@ -185,8 +187,6 @@ fetch("data.json")
     grouped[m].forEach(d=>{
 
       let day = d.Data.split("-")[2];
-
-      // 👉 e premte (Friday highlight)
       let dateObj = new Date(d.Data);
       let isFriday = dateObj.getDay() === 5;
 
@@ -205,7 +205,7 @@ fetch("data.json")
 
     html += `</table></div>`;
     container.innerHTML += html;
-  }
+  });
 
 });
 
